@@ -8,9 +8,9 @@ A regex debugger that visualizes backtracking step by step. Detects catastrophic
 
 ## Screenshots
 
-| Split-Pane Pattern Editor and Step Debugger | ReDoS Warning and Test Generator |
+| Landing Page (Playground) | Debugger (ReDoS + Groups) |
 |:---:|:---:|
-| ![Split-Pane Pattern Editor and Step Debugger](screenshots/hero.png) | ![ReDoS Warning and Test Generator](screenshots/dashboard.png) |
+| ![Debugger: ReDoS warning, capture group explorer, and test case generator](screenshots/dashboard.png) |
 
 ## Features
 

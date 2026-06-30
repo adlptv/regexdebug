@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>RegexDebug</title><style>
+      body{font-family:system-ui,sans-serif;background:#0d0d1a;color:#c9d1d9;margin:0}
+      .nav{padding:14px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a2e;background:#0a0a14}
+      .logo{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
+      .logo span{background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+      .hero{padding:50px 32px;max-width:1200px;margin:0 auto}
+      .hero h1{font-size:38px;font-weight:800;color:#f8fafc;margin:0 0 12px;line-height:1.2}
+      .hero h1 span{color:#a855f7}
+      .hero p{font-size:14px;color:#94a3b8;max-width:540px;line-height:1.6;margin:0 0 20px}
+      .btn{display:inline-flex;padding:10px 24px;border-radius:6px;background:linear-gradient(135deg,#9333ea,#06b6d4);color:#fff;font-weight:600;text-decoration:none;font-size:14px}
+      .playground{margin-top:36px;display:flex;gap:16px;min-height:380px}
+      .pg-left{flex:1;display:flex;flex-direction:column;gap:12px}
+      .pg-section{background:#0a0a14;border:1px solid #1a1a2e;border-radius:10px;overflow:hidden}
+      .pg-label{padding:8px 14px;background:#0f0f1f;border-bottom:1px solid #1a1a2e;font-size:10px;text-transform:uppercase;color:#8b5cf6;font-weight:700;letter-spacing:1px}
+      .pg-input{padding:14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#e2e8f0;line-height:1.6}
+      .pg-input .regex{color:#c4b5fd}.pg-input .str{color:#6ee7b7}
+      .pg-right{flex:1.2;display:flex;flex-direction:column;gap:12px}
+      .debug-panel{background:#0a0a14;border:1px solid #1a1a2e;border-radius:10px;overflow:hidden;flex:1}
+      .debug-step{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03);font-size:11px;font-family:monospace;display:flex;gap:12px;align-items:center}
+      .debug-step-num{color:#64748b;min-width:40px}.debug-step-pos{color:#06b6d4}
+      .debug-step-char{background:rgba(168,85,247,.2);padding:2px 6px;border-radius:3px;color:#c4b5fd}
+      .debug-step-action{color:#94a3b8} .debug-step-match{color:#22c55e;font-weight:700} .debug-step-fail{color:#ef4444}
+      .redos-warn{margin-top:12px;padding:10px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);border-radius:8px;font-size:11px;color:#fca5a5;display:flex;gap:8px;align-items:center}
+      .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto;padding:60px 32px}
+      .fcard{padding:22px;background:#0a0a14;border:1px solid #1a1a2e;border-radius:10px}
+      .fcard h3{font-size:15px;color:#f8fafc;margin:0 0 6px}.fcard p{font-size:13px;color:#64748b;margin:0}
+    
+.features { display: none !important; }
+</style></head><body>
+      <nav class="nav"><div class="logo">🔍 <span>RegexDebug</span></div><div style="font-size:13px;color:#64748b">Step Debugger · ReDoS Detector · Test Generator</div></nav>
+      <section class="hero">
+        <h1>Watch Your <span>Regex</span> Think.<br>Step by <span>Step.</span></h1>
+        <p>Not just "match/no match". See every backtracking step animated. Detect catastrophic backtracking. Auto-generate test cases. Built for developers, students, and teachers.</p>
+        <a href="#" class="btn">Open Playground →</a>
+        <div class="playground">
+          <div class="pg-left">
+            <div class="pg-section">
+              <div class="pg-label">📝 Pattern (JavaScript)</div>
+              <div class="pg-input"><span class="regex">/(a+b?|c*)+d/</span></div>
+            </div>
+            <div class="pg-section">
+              <div class="pg-label">🔤 Test String</div>
+              <div class="pg-input"><span class="str">"aaaaaaabbbbbccccd"</span></div>
+            </div>
+            <div class="redos-warn">💣 <strong>ReDoS Warning:</strong> Nested quantifier <code>(a+b?|c*)+</code> may cause catastrophic backtracking. Complexity: <strong>O(2ⁿ)</strong>. Estimated worst-case: 4.2M steps at 50 chars.</div>
+          </div>
+          <div class="pg-right">
+            <div class="debug-panel">
+              <div class="pg-label" style="background:#0f0f1f">🐾 Step Debugger (8 / 27 steps)</div>
+              <div class="debug-step"><span class="debug-step-num">Step 1</span><span class="debug-step-pos">pos=0</span><span class="debug-step-char">a</span><span class="debug-step-action">→ match <code>a+</code></span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 2</span><span class="debug-step-pos">pos=1</span><span class="debug-step-char">a</span><span class="debug-step-action">→ match <code>a+</code></span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 3</span><span class="debug-step-pos">pos=2</span><span class="debug-step-char">a</span><span class="debug-step-action">→ match <code>a+</code> (greedy)</span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 4</span><span class="debug-step-pos">pos=7</span><span class="debug-step-char">b</span><span class="debug-step-action">→ match <code>b?</code></span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 5</span><span class="debug-step-pos">pos=8</span><span class="debug-step-char">c</span><span class="debug-step-action">← backtrack <code>b?</code></span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 6</span><span class="debug-step-pos">pos=7</span><span class="debug-step-char">c</span><span class="debug-step-action">→ match <code>c*</code></span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 7</span><span class="debug-step-pos">pos=12</span><span class="debug-step-char">d</span><span class="debug-step-match">→ match <code>d</code> ✓ MATCH!</span></div>
+              <div class="debug-step"><span class="debug-step-num">Step 8</span><span class="debug-step-pos">—</span><span class="debug-step-char">—</span><span class="debug-step-action">🏁 Complete · 27 steps total</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="features">
+        <div class="fcard"><h3>🐾 Step Debugger</h3><p>Animated regex engine execution. See every character match, every backtrack, every capture.</p></div>
+        <div class="fcard"><h3>💣 ReDoS Detector</h3><p>Detects nested quantifiers, overlapping alternations, greedy wildcards. Complexity estimation.</p></div>
+        <div class="fcard"><h3>🎲 Test Generator</h3><p>Auto-generate valid and invalid test strings from your pattern. Find edge cases instantly.</p></div>
+        <div class="fcard"><h3>🎯 Group Explorer</h3><p>See capture groups matched at each step. Named groups highlighted with color coding.</p></div>
+        <div class="fcard"><h3>👨‍🏫 Teacher Mode</h3><p>Per-token annotation: "\b means word boundary". Interactive regex education for classrooms.</p></div>
+        <div class="fcard"><h3>🔗 Shareable Sessions</h3><p>Save debug session → get shareable URL. Perfect for Stack Overflow answers and teaching.</p></div>
+      </div>
+    </body></html>
