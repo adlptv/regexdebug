@@ -1,273 +1,84 @@
-<div align="center">
+# RegexDebug — Step-by-Step Regex Debugger
 
-# 🔍 RegexDebug
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
 
-### Step-by-Step Regex Debugger & Fuzzer
+A regex debugger that visualizes backtracking step by step. Detects catastrophic backtracking patterns, auto-generates test cases from your pattern, and explains each token — useful for teaching and debugging.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8?logo=tailwind-css)](https://tailwindcss.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.10-2D3748?logo=prisma)](https://www.prisma.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/Tests-Vitest+Playwright-green)](https://vitest.dev/)
+## Screenshots
 
-Debug regular expressions step-by-step, detect ReDoS vulnerabilities, generate test cases, and share sessions. A powerful regex playground for developers.
-
-</div>
-
----
-
-## ✨ Features
-
-- **🔬 Step Debugging** — Watch your regex execute step-by-step with animated visualization
-- **🛡️ ReDoS Detection** — Automatically detect catastrophic backtracking patterns and estimate worst-case complexity (O(n) → O(2ⁿ))
-- **🧪 Test Generator** — Auto-generate valid and invalid test cases from your regex pattern
-- **📊 Capture Group Explorer** — Visualize all capture groups with positions and named group highlighting
-- **📖 Explanation Mode** — Per-token annotation panel explaining what each part of your regex does
-- **🔗 Shareable Sessions** — Save debug sessions to database and share via URL
-- **📈 Performance Graph** — Benchmark regex execution time across different input sizes
-- **📋 Cheatsheet Sidebar** — Common regex patterns (email, URL, phone, IP, date, etc.) with quick reference
-- **🎨 Beautiful UI** — Glassmorphism design with gradients, animations, and dark/light themes
-
-## 📸 Screenshots
-
-| Split-Pane Pattern Editor + Step Debugger | ReDoS Warning & Test Generator |
+| Split-Pane Pattern Editor and Step Debugger | ReDoS Warning and Test Generator |
 |:---:|:---:|
-| ![ReDoS Warning & Test Generator](screenshots/dashboard.png) |
+| ![Split-Pane Pattern Editor and Step Debugger](screenshots/hero.png) | ![ReDoS Warning and Test Generator](screenshots/dashboard.png) |
 
-> 💡 *Run locally to see the full interactive experience: `pnpm dev` then open http://localhost:3000*
+## Features
 
+- Step-by-step backtracking visualization: see every character match, group capture, and backtrack
+- ReDoS detector: identifies nested quantifiers, overlapping alternations, and greedy wildcards with complexity estimates
+- Auto-generates valid and invalid test strings from your pattern
+- Capture group explorer: view groups captured at each step
+- Per-token explanation mode: describes what each part of the pattern does
+- Shareable sessions: save a debug session and share the URL
+- Monaco Editor for pattern and test string input
+- Performance comparison across input sizes
 
-## 🛠️ Tech Stack
-
-| Category | Technology |
-|----------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS + shadcn/ui |
-| Editor | Monaco Editor |
-| Database | Prisma + SQLite |
-| Animation | Framer Motion |
-| Validation | Zod |
-| Testing | Vitest + Playwright |
-| Containerization | Docker + Docker Compose |
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-
-### Installation
+## Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/regexdebug.git
+git clone https://github.com/adlptv/regexdebug.git
 cd regexdebug
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env
-
-# Initialize database
-npx prisma db push
-
-# Run development server
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Docker
-
+Or:
 ```bash
-# Build and run with Docker Compose
-docker-compose up -d
+docker-compose up
 ```
 
-## 📐 Architecture
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Browser (Client)                      │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
-│  │  Hero /  │ │  Regex   │ │   Step   │ │  ReDoS   │  │
-│  │ Landing  │ │ Editor   │ │ Debugger │ │ Detector │  │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
-│  │   Test   │ │ Capture  │ │Explainer │ │Perf Graph│  │
-│  │Generator │ │ Explorer │ │  Panel   │ │          │  │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘  │
-└─────────────────────────┬───────────────────────────────┘
-                          │ HTTP API
-┌─────────────────────────┴───────────────────────────────┐
-│              Next.js API Routes (Server)                 │
-│  ┌────────┐ ┌──────────┐ ┌─────────┐ ┌──────────┐      │
-│  │/debug  │ │/redos-   │ │/generate│ │ /explain │      │
-│  │  POST  │ │check POST│ │-tests   │ │   POST   │      │
-│  └────────┘ └──────────┘ └─────────┘ └──────────┘      │
-│  ┌────────┐ ┌──────────┐ ┌─────────┐                    │
-│  │/sessions│ │/sessions │ │/health  │                    │
-│  │GET/POST│ │  /[id]   │ │   GET   │                    │
-│  └────────┘ └──────────┘ └─────────┘                    │
-│                                                         │
-│  ┌──────────────────────────────────────┐              │
-│  │       Security Layer                 │              │
-│  │  Zod Validation • Rate Limiting     │              │
-│  │  ReDoS Protection • Input Sanitizing │              │
-│  └──────────────────────────────────────┘              │
-└─────────────────────────┬───────────────────────────────┘
-                          │ Prisma ORM
-┌─────────────────────────┴───────────────────────────────┐
-│                   SQLite Database                       │
-│  ┌──────────────┐  ┌─────────────────┐                 │
-│  │   Session    │  │ ShareableLink   │                 │
-│  ├──────────────┤  ├─────────────────┤                 │
-│  │ id           │  │ id              │                 │
-│  │ name         │  │ sessionId (FK)  │                 │
-│  │ pattern      │  │ token           │                 │
-│  │ testString   │  │ expiresAt       │                 │
-│  │ engine       │  │ createdAt       │                 │
-│  │ steps (JSON) │  └─────────────────┘                 │
-│  │ captures     │                                      │
-│  │ redosWarning │                                      │
-│  │ complexity   │                                      │
-│  │ createdAt    │                                      │
-│  └──────────────┘                                      │
-└─────────────────────────────────────────────────────────┘
+apps/regexdebug/
+├── src/app/          # Pages: landing, playground, debug/[id], sessions, settings
+│   └── api/          # debug, redos-check, generate-tests, explain, sessions, health
+├── src/components/   # RegexEditor, StepDebugger, RedosDetector, TestGenerator, CaptureExplorer, ExplanationPanel, UI primitives
+├── src/lib/          # regex-engine (step tracker), redos-detector, test-generator, explainer, validators (Zod)
+├── prisma/           # SQLite: Session, ShareableLink
+└── tests/            # Vitest + Playwright
 ```
 
-## 📡 API Documentation
+## ReDoS Detection Patterns
 
-### `POST /api/debug`
-Execute a regex pattern with step tracking.
+| Pattern | Example | Complexity |
+|---------|---------|------------|
+| Nested quantifiers | (a+)+ | O(2ⁿ) |
+| Overlapping alternation | (a|a)+ | O(2ⁿ) |
+| Prefix ambiguity | .*x | O(n²) |
+| Greedy wildcard | .*.* | O(n²) |
 
-**Request:**
-```json
-{
-  "pattern": "\\d+",
-  "testString": "hello 123 world",
-  "flags": "g",
-  "engine": "javascript"
-}
-```
+## API
 
-**Response:** `200 OK`
-```json
-{
-  "steps": [...],
-  "matches": [{ "match": "123", "index": 6, "groups": [] }],
-  "totalSteps": 15,
-  "executionTime": 0.45,
-  "redosWarning": false,
-  "complexity": "O(n)"
-}
-```
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | /api/debug | Execute regex with step tracking |
+| POST | /api/redos-check | Check pattern for backtracking risks |
+| POST | /api/generate-tests | Generate test cases from pattern |
+| POST | /api/explain | Generate per-token explanation |
+| GET/POST | /api/sessions | List or save debug sessions |
+| GET/DELETE | /api/sessions/[id] | Get or delete a session |
+| GET | /api/sessions/[id]/share | Get shareable link |
+| GET | /api/health | Health check |
 
-### `POST /api/redos-check`
-Check a pattern for ReDoS vulnerabilities.
+## Security
 
-**Request:** `{ "pattern": "(a+)+" }`
-**Response:** `{ "isVulnerable": true, "complexity": "O(2ⁿ)", "patterns": [...], "suggestions": [...] }`
+- Zod validation on all routes
+- Rate limiting
+- Input size limits on server-side regex execution
+- Execution timeout with ReDoS protection
+- Helmet.js headers
 
-### `POST /api/generate-tests`
-Generate test cases from a pattern.
+## License
 
-**Request:** `{ "pattern": "\\d{3}", "count": 5 }`
-**Response:** `{ "tests": [{ "input": "123", "shouldMatch": true, "actualMatch": true, "matchValue": "123" }] }`
-
-### `POST /api/explain`
-Get per-token explanation of a regex pattern.
-
-**Request:** `{ "pattern": "\\d+" }`
-**Response:** `{ "tokens": [{ "token": "\\d", "type": "escape", "description": "Matches any digit (0-9)" }] }`
-
-### `GET /api/sessions`
-List all saved debug sessions.
-
-### `POST /api/sessions`
-Create a new debug session.
-
-### `GET /api/sessions/:id`
-Get a specific session by ID.
-
-### `DELETE /api/sessions/:id`
-Delete a session.
-
-### `GET /api/sessions/:id/share`
-Create or retrieve a shareable link for a session.
-
-### `GET /api/health`
-Health check endpoint.
-
-## 📖 Regex Reference Guide
-
-| Token | Description | Example |
-|-------|-------------|---------|
-| `.` | Any character | `a.c` → `abc`, `a1c` |
-| `\d` | Digit (0-9) | `\d+` → `123` |
-| `\w` | Word char (a-z, A-Z, 0-9, _) | `\w+` → `hello_1` |
-| `\s` | Whitespace | `\s+` → ` ` |
-| `\b` | Word boundary | `\bword\b` |
-| `^` | Start of string | `^Hello` |
-| `$` | End of string | `world$` |
-| `*` | 0 or more | `a*` |
-| `+` | 1 or more | `a+` |
-| `?` | 0 or 1 | `colou?r` |
-| `{n}` | Exactly n | `\d{3}` |
-| `{n,m}` | n to m | `\d{2,4}` |
-| `[abc]` | Character class | `[aeiou]` |
-| `[^abc]` | Negated class | `[^0-9]` |
-| `(abc)` | Capture group | `(\d+)-(\d+)` |
-| `(?:...)` | Non-capturing | `(?:abc)+` |
-| `(?=...)` | Lookahead | `a(?=b)` |
-| `(?<=...)` | Lookbehind | `(?<=a)b` |
-| `(?<name>...)` | Named group | `(?<year>\d{4})` |
-| `\|` | Alternation | `cat\|dog` |
-| `\k<name>` | Backreference | `\k<year>` |
-
-## 🧪 Testing
-
-```bash
-# Unit tests
-npm test
-
-# E2E tests (requires dev server running)
-npm run test:e2e
-```
-
-## 🐳 Docker Deployment
-
-```bash
-# Build and run
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop
-docker-compose down
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-
-Built with ❤️ for developers who care about regex safety.
-
-</div>
+MIT
