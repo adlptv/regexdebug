@@ -31,9 +31,9 @@ Debug regular expressions step-by-step, detect ReDoS vulnerabilities, generate t
 
 ## 📸 Screenshots
 
-| Landing Page | Dashboard |
+| Split-Pane Pattern Editor + Step Debugger | ReDoS Warning & Test Generator |
 |:---:|:---:|
-| ![Regexdebug Hero](screenshots/hero.png) | ![Regexdebug Dashboard](screenshots/dashboard.png) |
+| ![ReDoS Warning & Test Generator](screenshots/dashboard.png) |
 
 > 💡 *Run locally to see the full interactive experience: `pnpm dev` then open http://localhost:3000*
 
