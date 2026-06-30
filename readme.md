@@ -29,6 +29,15 @@ Debug regular expressions step-by-step, detect ReDoS vulnerabilities, generate t
 - **📋 Cheatsheet Sidebar** — Common regex patterns (email, URL, phone, IP, date, etc.) with quick reference
 - **🎨 Beautiful UI** — Glassmorphism design with gradients, animations, and dark/light themes
 
+## 📸 Screenshots
+
+| Landing Page | Dashboard |
+|:---:|:---:|
+| ![Regexdebug Hero](screenshots/hero.png) | ![Regexdebug Dashboard](screenshots/dashboard.png) |
+
+> 💡 *Run locally to see the full interactive experience: `pnpm dev` then open http://localhost:3000*
+
+
 ## 🛠️ Tech Stack
 
 | Category | Technology |
